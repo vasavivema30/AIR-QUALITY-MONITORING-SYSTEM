@@ -1,0 +1,119 @@
+#define BLYNK_TEMPLATE_ID "TMPL3eTgGBdD-"
+#define BLYNK_TEMPLATE_NAME "Air Quality Monitoring"
+#define BLYNK_AUTH_TOKEN "3l97qgqTGib9nBOMN0NRjw6M940rok1p"
+#define BLYNK_PRINT Serial
+#include <WiFi.h> 
+#include <BlynkSimpleEsp32.h>
+#include <DHT.h>
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27, 16, 2); // I2C address 0x27, 16x2 display
+byte degree_symbol[8] = {
+  0b00111,
+  0b00101,
+  0b00111, 
+  0b00000,
+  0b00000,
+  0b00000,
+  0b00000,
+  0b00000
+};
+
+char auth[] = BLYNK_AUTH_TOKEN;
+char ssid[] = "NARZO 70 Pro 5G";  // your WiFi name
+char pass[] = "1234567890";  // your WiFi password
+
+BlynkTimer timer;
+
+int gas = 32;
+int sensorThreshold = 100;
+
+#define DHTPIN 2       // GPIO2
+#define DHTTYPE DHT11  
+DHT dht(DHTPIN, DHTTYPE);
+
+void sendSensor() {
+  float h = dht.readHumidity();
+  float t = dht.readTemperature(); // Celsius
+
+  if (isnan(h) || isnan(t)) {
+    Serial.println("Failed to read from DHT sensor!");
+    return;
+  }
+
+  int analogSensor = analogRead(gas);
+  Blynk.virtualWrite(V2, analogSensor);
+  Blynk.virtualWrite(V0, t);
+  Blynk.virtualWrite(V1, h);
+
+  Serial.print("Temperature: ");
+  Serial.print(t);
+  Serial.print(" °C, Humidity: ");
+  Serial.print(h);
+  Serial.print("%, Gas: ");
+  Serial.println(analogSensor);
+}
+
+void setup() {
+  Serial.begin(115200);
+lcd.init();
+lcd.backlight();
+  
+  dht.begin();
+  //lcd.createChar(1, degree_symbol);
+  lcd.setCursor(3, 0);
+  lcd.print("Air Quality");
+  lcd.setCursor(2, 1);
+  lcd.print("Monitoring");
+  delay(2000);
+  lcd.clear();
+  Blynk.begin(auth, ssid, pass);
+  timer.setInterval(30000L, sendSensor);
+}
+
+void loop() {
+  Blynk.run();
+  timer.run();
+
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+  int gasValue = analogRead(gas);
+
+  // Display Temperature
+  lcd.setCursor(0, 0);
+  lcd.print("Temperature");
+  lcd.setCursor(0, 1);
+  lcd.print(t);
+  lcd.write(1); // Degree symbol
+  lcd.print("C");
+  delay(4000);
+  lcd.clear();
+
+  // Display Humidity
+  lcd.setCursor(0, 0);
+  lcd.print("Humidity");
+  lcd.setCursor(0, 1);
+  lcd.print(h);
+  lcd.print("%");
+  delay(4000);
+  lcd.clear();
+
+  // Display Gas Status
+  lcd.setCursor(0, 0);
+  lcd.print("Gas Value: ");
+  lcd.print(gasValue);
+  lcd.setCursor(0, 1);
+
+  if (gasValue < 1200) {
+    lcd.print("Fresh Air");
+    Serial.println("Fresh Air");
+  } else {
+    lcd.print("Bad Air");
+    Serial.println("Bad Air");
+    Blynk.logEvent("pollution_alert", "Bad Air");
+  }
+
+  Serial.print("Gas Value: ");
+  Serial.println(gasValue);
+  delay(4000);
+  lcd.clear();
+}
