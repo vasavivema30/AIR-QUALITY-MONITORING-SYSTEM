@@ -57,15 +57,10 @@ The Blynk application displays:
 
 ### Hardware Setup
 
-![Hardware](images/hardware.jpg)
+![Hardware](AIR QUALITY MONITORING SYSTEM.jpg)
 
-### Circuit Diagram
 
-![Circuit](images/circuit.png)
 
-### Blynk Dashboard
-
-![Blynk](images/blynk.jpg)
 
 ---
 
@@ -82,7 +77,6 @@ Air-Quality-Monitoring-System/
 │  
 │
 ├── README.md
-└── LICENSE
 ```
 
 ---
