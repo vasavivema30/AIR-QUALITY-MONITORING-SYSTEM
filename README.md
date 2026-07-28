@@ -55,14 +55,7 @@ The Blynk application displays:
 
 ## 📷 Project Images
 
-### Hardware Setup
 
-![Hardware](AIR QUALITY MONITORING SYSTEM.jpg)
-
-
-
-
----
 
 ## 📁 Project Structure
 
@@ -109,6 +102,5 @@ KL University
 
 ---
 
-## 📜 License
+<img width="325" height="586" alt="image" src="https://github.com/user-attachments/assets/0a19db17-c971-4468-9781-83ea2adbf4e9" />
 
-This project is developed for educational purposes.
