@@ -94,7 +94,7 @@ Air-Quality-Monitoring-System/
 
 ## 👩‍💻 Author
 
-**Vasavi Vema**
+**Vasavi Viswajitha Vema**
 
 B.Tech - Electronics and Communication Engineering (ECE)
 
@@ -103,4 +103,6 @@ KL University
 ---
 
 <img width="325" height="586" alt="image" src="https://github.com/user-attachments/assets/0a19db17-c971-4468-9781-83ea2adbf4e9" />
+<img width="317" height="611" alt="image" src="https://github.com/user-attachments/assets/faea796f-fb6d-425e-90f0-bc28ebfc520e" />
+
 
